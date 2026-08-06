@@ -1,0 +1,22 @@
+# Minecraft Server Companion
+
+A web-based dashboard for monitoring and managing a Minecraft (Paper) server remotely via RCON.
+
+## Status
+
+🚧 In development
+
+## Planned Features (MVP)
+
+- Server online/offline status
+- View connected players
+- Restart / stop server
+- Console (execute RCON commands)
+- Whitelist management
+- Server log viewer
+
+## Tech Stack
+
+- **Frontend**: React
+- **Backend**: Node.js, Express
+- **Protocol**: RCON (Minecraft Paper server)
