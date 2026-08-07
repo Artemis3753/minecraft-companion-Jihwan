@@ -14,9 +14,15 @@ A web-based dashboard for monitoring and managing a Minecraft (Paper) server rem
 - Console (execute RCON commands)
 - Whitelist management
 - Server log viewer
+- Authentication (single shared password)
 
 ## Tech Stack
 
 - **Frontend**: React
 - **Backend**: Node.js, Express
 - **Protocol**: RCON (Minecraft Paper server)
+
+## Design
+
+[`docs/PRD.md`](docs/PRD.md) covers the scope, screens, structure, and the
+reasoning behind each technical decision.
