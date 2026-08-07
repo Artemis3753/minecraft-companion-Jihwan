@@ -10,7 +10,7 @@ A web-based dashboard for monitoring and managing a Minecraft (Paper) server rem
 
 - Server online/offline status
 - View connected players
-- Restart / stop server
+- Stop server
 - Console (execute RCON commands)
 - Whitelist management
 - Server log viewer

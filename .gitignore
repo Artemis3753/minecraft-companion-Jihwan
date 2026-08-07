@@ -2,6 +2,9 @@
 .env
 .env.local
 
+# 개인 메모 (면접 준비용 — 다듬기 전 초고라 공개하지 않음)
+docs/interview-prep.md
+
 # 의존성
 node_modules/
 

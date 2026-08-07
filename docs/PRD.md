@@ -23,18 +23,23 @@ displace them.
 | --- | --- |
 | Server online/offline status | Green/red indicator |
 | Connected players list | Backed by the RCON `list` command |
-| Restart / stop server | Stop is styled red; destructive commands need confirmation |
+| Stop server | Styled red; needs an explicit confirmation step |
 | Console | Command input + response output. No history persistence yet |
 | Whitelist management | List, add, remove |
 | Server logs | Full log output, all levels (INFO / WARN / ERROR / CHAT) |
 | Authentication | Single shared password. Not a user-account system |
 
-Authentication is in the MVP, not deferred. Console, restart, and whitelist edits
-are all destructive and must not be reachable without auth — retrofitting it later
+Authentication is in the MVP, not deferred. Console, stop, and whitelist edits are
+all destructive and must not be reachable without auth — retrofitting it later
 would mean reworking the request path.
 
 ### Later
 
+- **Restart.** Cut from the MVP deliberately. Minecraft has no `restart` command
+  — RCON can only send `stop`, so restarting means a process supervisor outside
+  the server that notices it died and runs `start.bat` again. That drags in the
+  still-undecided deployment question, and it is a different problem from
+  everything else in the MVP. Revisit once deployment is settled.
 - Player history (UUID, first/last login, kills/deaths, total playtime)
 - Alerts / notifications on server down
 - Multi-server support
@@ -55,8 +60,8 @@ Tabs are the only navigation. There is no sidebar.
 
 **Login** — password field, submit button.
 
-**Dashboard** — status indicator (green/red), connected players list, Restart and
-Stop buttons. Stop is red to mark it as destructive.
+**Dashboard** — status indicator (green/red), connected players list, and a Stop
+button, red to mark it as destructive.
 
 **Console** — command input, response output. Session history and persistence are
 out of scope for now.
