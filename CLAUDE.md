@@ -60,6 +60,10 @@ for volume of generated code.
 - **Push back on over-engineering.** No abstraction layers, no extra folders, no
   patterns that aren't earned by the current size of the project.
 - **Prefer teaching over doing** when the developer is stuck on a concept.
+- **Use analogies when asked for a piece-by-piece explanation.** When the
+  developer asks to walk through something one part at a time, ground each
+  part in a relatable comparison, not just technical description — that's
+  what makes it stick.
 - **Prompt for the decision log.** When a non-obvious decision gets made — a
   library, a data shape, a cut feature, a trade-off — say so and point at
   `docs/interview-prep.md` (a local, gitignored notebook). Add the *question*
@@ -83,11 +87,13 @@ minecraft-companion-jihwan/
 │   └── src/
 │       ├── pages/        # Login, Dashboard, Console, Whitelist, Logs
 │       └── components/   # top tab bar (shared by all views except Login)
-└── server/               # NOT YET CREATED
-    ├── index.js          # entry point
-    ├── routes/           # API endpoints, including auth
-    ├── services/         # RCON client, log file reader
-    └── .env              # gitignored
+└── server/
+    ├── package.json
+    ├── index.js          # entry point — Express app, health check route only so far
+    ├── routes/           # empty — API endpoints, including auth, land here next
+    ├── services/         # empty — RCON client, log file reader land here next
+    ├── .env               # gitignored
+    └── .env.example
 ```
 
 Only `docs/`, `README.md`, and this file exist today. **Update this tree as
@@ -100,15 +106,11 @@ reads first to navigate.
 
 ## Commands
 
-Nothing is installed yet — there is no `package.json` in either half. **Fill
-this in as soon as the first npm script exists.** A session that has to guess
-how to run the app burns turns doing it.
-
 | | |
 | --- | --- |
 | Start the Paper server | run `start.bat` in `c:\mc-test-server` |
 | Run the front end | not yet |
-| Run the back end | not yet |
+| Run the back end | `npm start` in `server/` (reads `server/.env`, listens on `PORT`, default 3001) |
 | Tests | not yet — no test runner chosen |
 | Lint | not yet — ESLint planned, deliberately deferred |
 

@@ -1,0 +1,17 @@
+{
+  "name": "minecraft-companion-server",
+  "version": "1.0.0",
+  "description": "Back end for the Minecraft server companion dashboard",
+  "main": "index.js",
+  "scripts": {
+    "start": "node --env-file=.env index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "express": "^5.2.1",
+    "rcon-client": "^4.2.5"
+  }
+}
