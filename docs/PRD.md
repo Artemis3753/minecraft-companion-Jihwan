@@ -114,13 +114,18 @@ without bound; read a bounded tail rather than the whole file.
 **RCON, not a plugin.** RCON is built into Paper and needs no server-side code,
 keeping the Minecraft server unmodified.
 
-**Deployment: undecided.** Vercel is the leading candidate for the front end.
-The back end is the open problem: it reads `latest.log` off disk and opens a TCP
-socket to `localhost:25575`, so a serverless host with no filesystem access to
-the Minecraft machine won't work as-is. Options to weigh when the app runs
-locally end to end: run the back end on the same box as the Minecraft server and
-expose it, or split log access behind a small agent. Decide before writing
-deployment-specific code, not after.
+**Deployment: back end location decided, public exposure deferred.** The back
+end reads `latest.log` off disk and opens a TCP socket to `localhost:25575`, so
+it must run as a persistent process on the same machine/network as the
+Minecraft server — a serverless host with no filesystem access to that machine
+won't work (2026-08-08). This is settled regardless of what comes next, so it
+doesn't block `server/` scaffolding.
+
+What's still open: whether to expose that back end publicly (port
+forwarding/tunnel/VPS, paired with the Vercel-hosted front end) versus running
+everything locally and submitting a recorded demo per Definition of done. That
+choice doesn't change any code written before it — it's revisited at the
+deployment/wrap-up stage, not now.
 
 ## Avoiding an API-wrapper project
 
@@ -132,8 +137,10 @@ mostly display it.
 
 This project avoids that trap, and should keep avoiding it:
 
-- **RCON is a raw TCP protocol**, not a curated HTTP API. Framing, authentication
-  handshake, session lifetime, and reconnection are all handled here.
+- **RCON is a raw TCP protocol**, not a curated HTTP API — even routed through a
+  client library, the app still owns connection lifecycle, session state, and
+  reconnection, unlike a REST call that returns a finished response and forgets
+  the connection existed.
 - **Log parsing is ours.** `latest.log` is unstructured text; deciding what to
   read, how much, and how to present it is a design problem.
 - **The HTTP API is designed here, not consumed.** Endpoints, payload shapes, and
