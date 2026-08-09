@@ -60,8 +60,18 @@ Tabs are the only navigation. There is no sidebar.
 
 **Login** — password field, submit button.
 
-**Dashboard** — status indicator (green/red), connected players list, and a Stop
-button, red to mark it as destructive.
+**Dashboard** — status indicator, connected players list, and a Stop button, red
+to mark it as destructive.
+
+The indicator carries three states, not two: **green** (RCON answered), **red**
+(the back end answered but RCON refused the connection — Minecraft is down), and
+**grey** (the back end itself did not answer). Collapsing the last two would
+report a dead back end as a dead Minecraft server and send you to fix the wrong
+machine.
+
+Status and the player list come from one endpoint, not two. A single RCON `list`
+call already answers both — a reply means the server is up, and its contents are
+the roster — so splitting them would send the same command twice for no gain.
 
 **Console** — command input, response output. Session history and persistence are
 out of scope for now.
