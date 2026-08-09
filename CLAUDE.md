@@ -5,8 +5,9 @@
 A web dashboard for monitoring and managing a Paper Minecraft server remotely
 over RCON.
 
-**The repo is pre-code.** There is no source, no `package.json`, no build
-tooling yet. Don't go looking for an implementation; it hasn't been written.
+**The back end has started.** `server/` has an Express entry point and a working
+RCON client, verified against the live server. `client/` has not been created
+yet, and there is still no test runner and no lint setup.
 
 ## Absolute rules
 
@@ -54,6 +55,12 @@ for volume of generated code.
 - **Skeletons are the developer's job.** File structure, module boundaries, and
   function signatures are the developer's calls. Fill in and review rather than
   architect from scratch.
+- **Syntax help is not a principle violation.** Explaining language mechanics
+  (control flow, async/await, event listeners) with generic examples — separate
+  from the actual file — is teaching, not writing the feature. The line: explain
+  and show isolated examples; the developer types the real line into the file.
+  Design decisions (data shape, module boundaries, what gets cached, why a
+  library) still require propose-and-wait.
 - **Explain the "why" behind any non-obvious choice** — a library, a data shape,
   an error-handling strategy. If the developer can't defend it in an interview,
   it shouldn't be in the repo.
@@ -91,12 +98,13 @@ minecraft-companion-jihwan/
     ├── package.json
     ├── index.js          # entry point — Express app, health check route only so far
     ├── routes/           # empty — API endpoints, including auth, land here next
-    ├── services/         # empty — RCON client, log file reader land here next
+    ├── services/
+    │   └── rconClient.js # cached connection + sendCommand(); log reader lands here next
     ├── .env               # gitignored
     └── .env.example
 ```
 
-Only `docs/`, `README.md`, and this file exist today. **Update this tree as
+Everything in this tree exists except `client/`. **Update this tree as
 directories are created** — it is the current map, and it is what a session
 reads first to navigate.
 
