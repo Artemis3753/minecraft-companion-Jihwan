@@ -22,10 +22,76 @@ A web-based dashboard for monitoring and managing a Minecraft (Paper) server rem
 - **Backend**: Node.js, Express
 - **Protocol**: RCON (Minecraft Paper server)
 
+## Setup
+
+Only the back end exists so far — `client/` has not been created yet.
+
+### Prerequisites
+
+- **Node.js 20 or newer.** The start script uses `node --env-file`, which older
+  versions do not support. Developed on v24.19.0.
+- **A Paper (or Spigot/Vanilla) Minecraft server with RCON enabled.** In its
+  `server.properties`:
+
+  ```
+  enable-rcon=true
+  rcon.port=25575
+  rcon.password=<something>
+  ```
+
+  RCON only takes effect after the Minecraft server restarts.
+
+### Install
+
+```bash
+cd server
+npm install
+```
+
+### Configure
+
+Copy `.env.example` to `.env` and fill in all five keys:
+
+| Key | Where it comes from |
+| --- | --- |
+| `PORT` | Port for this back end. `3001` if you have no reason to change it |
+| `RCON_HOST` | Host running the Minecraft server — `localhost` if it is the same machine |
+| `RCON_PORT` | `rcon.port` from the Minecraft server's `server.properties` |
+| `RCON_PASSWORD` | `rcon.password` from that same file |
+| `DASHBOARD_PASSWORD` | Your own choice — the password for logging into this dashboard |
+
+`DASHBOARD_PASSWORD` and `RCON_PASSWORD` are deliberately separate. The RCON
+password authenticates the back end to Minecraft and must never reach a browser:
+anyone holding it can connect straight to the RCON port and issue `stop`,
+bypassing this dashboard and its confirmation step entirely.
+
+`.env` is gitignored and must stay that way. `.env.example` carries key names
+only, never values.
+
+### Run
+
+```bash
+npm start
+```
+
+The back end listens on `PORT` (default `3001`). Check that it is up:
+
+```bash
+curl http://localhost:3001/api/health
+```
+
+`/api/health` is the only route that exists today. The Minecraft server does not
+need to be running for the back end to start.
+
 ## API
 
-In progress — Login, Dashboard, and Whitelist are settled. Console and Logs are
-not designed yet.
+**This is a design specification, not a description of working code.** None of
+the endpoints below are implemented yet; `server/routes/` is still empty. They
+are recorded here so the contract between `client/` and `server/` is fixed
+before either side is built against it.
+
+Login, Dashboard, and Whitelist are settled. Console and Logs are not designed
+yet.
 
 Every payload key is `camelCase`. Failures always carry the message under
 `error`, so a client reads one field regardless of which endpoint failed.
