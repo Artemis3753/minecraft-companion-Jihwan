@@ -81,6 +81,23 @@ for volume of generated code.
   the moment, and mid-work that leaks; a commit is an explicit checkpoint that
   doesn't. Before writing the message, ask whether the change embodies a
   decision worth a question.
+- **The developer writes the commit message.** Supply the raw material — what
+  changed, which decision it embodies, what a reader would need to know, what is
+  worth leaving out — as notes, not as drafted prose. Never hand over a finished
+  message to paste. Git history is read in interviews, and a history written in
+  someone else's voice is one the developer cannot speak to. Same boundary as
+  code: substance from here, wording from the developer.
+  - **Give that material in both Korean and English**, even though it makes the
+    reply longer. The conversation is Korean and the message is English, so
+    hand over English terms and fragments to assemble — not finished sentences
+    to paste. Translating while drafting is where the developer's own wording
+    gets lost.
+  - **The `Co-Authored-By` trailer records who actually wrote the change**, not
+    whatever reads better. It belongs on a commit whose code or prose came from
+    here; it does not belong on one the developer wrote alone. Its share should
+    fall as the developer writes more, and a history showing that shift is worth
+    more than a uniform one. In an interview what protects the developer is
+    being able to defend each decision, not a clean-looking trailer list.
 
 ## Architecture
 
