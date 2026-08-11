@@ -159,6 +159,17 @@ The boundary is who chose the command, not which command it is (2026-08-11).
 Paper strips a leading `/` itself — `/list` and `list` return byte-identical
 responses, verified against the live server. Don't add slash handling.
 
+**RCON replies can carry `§` formatting codes.** `help` comes back as
+`§e--------- §fHelp: §rIndex (1/23) §e---…` while `list` has none, so they appear
+per command, not per connection. `§0`–`§9` and `§a`–`§f` are colours; `§l` `§o`
+`§n` `§m` are bold, italic, underline, strikethrough; `§k` scrambles; `§r`
+resets. The back end passes them through untouched — the Console renders them as
+real colour (2026-08-11). `latest.log` does not carry them.
+
+That rendering turns server text into markup, which is an injection risk: build
+it as React elements, never `dangerouslySetInnerHTML`. Player names and chat
+reach both the Console and the log viewer, so the text is not trusted input.
+
 **There is no `restart` command in Minecraft.** RCON can only send `stop`;
 restarting requires a process supervisor outside the server. Restart was cut
 from the MVP for that reason — see the Later list in `docs/PRD.md`. Don't

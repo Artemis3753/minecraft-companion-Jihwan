@@ -89,6 +89,12 @@ Input is unrestricted and the reply comes back verbatim. Every other screen
 parses RCON's sentences into structures; this one deliberately does not, and that
 is what makes it a screen rather than three more buttons.
 
+Minecraft's `§` formatting codes survive that trip, and the Console renders them
+as real colour rather than stripping them (2026-08-11). Colour is part of what
+the server said — `help` marks its own headings — so removing it would edit the
+output while claiming to show it verbatim. The work lands in the client, which
+keeps the back end's promise intact: it still returns exactly what RCON gave it.
+
 **Whitelist** — current entries, add field, per-row remove.
 
 **Logs** — terminal-style scrollable view, monospace, unfiltered and ungrouped.
