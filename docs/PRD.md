@@ -171,6 +171,11 @@ Anything beyond this is a new, separately scoped effort, not "still finishing."
       recorded demo
 - [ ] `README.md` covers what it is, why it exists, the stack, setup steps, and
       screenshots
+- [ ] `README.md` is rewritten in the developer's own words. Sections drafted
+      with AI help are fine while building — but the README is the first thing a
+      reviewer reads, and a decision record the developer cannot speak in their
+      own voice is worth less than the decisions in it. Same reasoning as the
+      commit-message rule in `CLAUDE.md`
 - [ ] Design decisions and their reasoning are written down (this file, kept
       current)
 - [ ] Repo is public, `.env` never committed, history clean of secrets
