@@ -24,7 +24,7 @@ displace them.
 | Server online/offline status | Green/red indicator |
 | Connected players list | Backed by the RCON `list` command |
 | Stop server | Styled red; needs an explicit confirmation step |
-| Console | Command input + response output. No history persistence yet |
+| Console | Free command input — anything RCON accepts — and the server's reply verbatim. No history persistence yet |
 | Whitelist management | List, add, remove |
 | Server logs | Full log output, all levels (INFO / WARN / ERROR / CHAT) |
 | Authentication | Single shared password. Not a user-account system |
@@ -32,6 +32,12 @@ displace them.
 Authentication is in the MVP, not deferred. Console, stop, and whitelist edits are
 all destructive and must not be reachable without auth — retrofitting it later
 would mean reworking the request path.
+
+**Buttons are shortcuts; the Console is the full surface.** Anything RCON accepts
+can be typed into the Console, so a dedicated screen or button exists only where
+a command is run often enough to be worth one — status, whitelist, stop. This is
+the filter for future features: if a candidate would be used rarely, the Console
+already covers it and a control of its own earns nothing (2026-08-11).
 
 ### Later
 
@@ -44,7 +50,10 @@ would mean reworking the request path.
 - Alerts / notifications on server down
 - Multi-server support
 - Search and filtering on logs and player lists
-- `op` / `deop` (powerful permission — needs a considered permission model first)
+- `op` / `deop` **as a managed feature** — an operator list, controls to promote
+  and demote, and a permission model behind them. What is deferred is this
+  project taking a position on who may hold that authority. Typing `op` into the
+  Console is not that, and is not blocked (2026-08-11)
 - Command history persistence
 - Live log streaming over WebSocket
 
@@ -75,6 +84,10 @@ the roster — so splitting them would send the same command twice for no gain.
 
 **Console** — command input, response output. Session history and persistence are
 out of scope for now.
+
+Input is unrestricted and the reply comes back verbatim. Every other screen
+parses RCON's sentences into structures; this one deliberately does not, and that
+is what makes it a screen rather than three more buttons.
 
 **Whitelist** — current entries, add field, per-row remove.
 

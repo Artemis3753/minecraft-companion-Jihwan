@@ -90,8 +90,7 @@ the endpoints below are implemented yet; `server/routes/` is still empty. They
 are recorded here so the contract between `client/` and `server/` is fixed
 before either side is built against it.
 
-Login, Dashboard, and Whitelist are settled. Console and Logs are not designed
-yet.
+Login, Dashboard, Whitelist, and Console are settled. Logs is not designed yet.
 
 Every payload key is `camelCase`. Failures always carry the message under
 `error`, so a client reads one field regardless of which endpoint failed.
@@ -236,6 +235,71 @@ what they wanted and an error would only confuse.
 
 The Mojang `404` stays, because that is a different case: not "already gone" but
 a name that never identified anyone.
+
+### `POST /api/console`
+
+Sends one command to the Minecraft server and returns what it said.
+
+| | |
+| --- | --- |
+| Auth | token required |
+| Request | `{ "command": "list" }` |
+| `200` | `{ "output": "There are 0 of a max of 20 players online: " }` |
+| `400` | `{ "error": "Command cannot be empty." }` |
+| `503` | `{ "error": "Cannot reach the Minecraft server. It may not be running." }` |
+
+`POST`, even though `{ "command": "list" }` only reads. The method is a promise
+the endpoint makes, not a description of one request, and this endpoint cannot
+promise anything: it does not know whether the string it is handed is `list` or
+`stop` until Minecraft has already run it. `GET` would also put the command in
+the URL, where it lands in access logs and browser history and is fair game for
+caches.
+
+`output` holds Minecraft's reply as it arrived, unparsed — the one place in this
+API where that happens. Everywhere else the back end takes RCON's sentences
+apart and returns structures, because Minecraft's wording is not this project's
+to expose. Showing exactly what the server said is the whole reason the Console
+exists; parsing it would leave a worse Dashboard. Free input also means there is
+no fixed set of replies to write parsers against.
+
+The key is `output` rather than `response` or `rconResponse`. The body already is
+the response, so `response` names the envelope instead of the contents, and
+`rconResponse` names where the text came from — which the client neither needs
+nor should depend on.
+
+**An unrecognised command is `200`, not `400`.** RCON does not fail on one; it
+answers, and the answer is a sentence:
+
+```
+Unknown or incomplete command. See below for error
+asdfqwer<--[HERE]
+```
+
+Returning `400` would mean matching Minecraft's error wording inside the back
+end — wording that belongs to Mojang and changes with versions — and with free
+input there is no closed set of replies to make such a rule complete. The command
+was delivered and the server replied, so the request succeeded; that the reply is
+a complaint is what `output` is for.
+
+**A blank `command` is `400`, rejected before RCON sees it.** This is the API's
+own rule rather than an error being caught: RCON accepts an empty string and
+returns one. `400` covers only this case, so a single message can say exactly
+what to fix.
+
+**An empty reply is still `200` with `{ "output": "" }`.** `say hello` returns
+nothing over RCON even though the broadcast reaches the log. `204 No Content` was
+considered and rejected: it forbids a body, and switching shape on empty content
+would force the client to branch — the same reason an empty whitelist is `200`
+with `[]`.
+
+Typing `/list` out of game habit works. Paper strips the leading slash itself and
+returns a byte-identical response, verified against the live server, so the back
+end adds no slash handling.
+
+Nothing in `command` is filtered. Reaching RCON at all is full control of the
+server, and the token that opens this endpoint already opens `POST /api/stop`, so
+an allowlist here would draw a boundary that does not exist. Confirmation lives
+in the client, as it does for `POST /api/stop`.
 
 ## Design
 

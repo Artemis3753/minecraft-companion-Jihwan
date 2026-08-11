@@ -146,9 +146,18 @@ API. It authenticates once, then carries many commands, and can drop
 mid-session. Keep connection handling in one reusable module; don't open a
 socket per request.
 
-Commands the MVP sends: `list` (players), `whitelist list|add <name>|remove
-<name>`, `stop`. That is the whole set — don't add to it without raising it
-first.
+**Commands the project itself sends:** `list` (players), `whitelist list|add
+<name>|remove <name>`, `stop`. That is the whole set — don't add a button, a
+screen, or an endpoint that sends anything else without raising it first.
+
+**The Console is not covered by that list.** It forwards whatever the user types
+straight to RCON with no filter, so any command Paper accepts can reach the
+server through it — including, but not limited to, the four above. The list
+governs what *this project* decides to send; in the Console the user decides.
+The boundary is who chose the command, not which command it is (2026-08-11).
+
+Paper strips a leading `/` itself — `/list` and `list` return byte-identical
+responses, verified against the live server. Don't add slash handling.
 
 **There is no `restart` command in Minecraft.** RCON can only send `stop`;
 restarting requires a process supervisor outside the server. Restart was cut
