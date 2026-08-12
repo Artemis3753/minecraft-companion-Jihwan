@@ -100,6 +100,18 @@ Login, Dashboard, Whitelist, Console, and Logs are all settled.
 Every payload key is `camelCase`. Failures always carry the message under
 `error`, so a client reads one field regardless of which endpoint failed.
 
+Endpoints that require a token expect it in the standard `Authorization` header,
+using the `Bearer` scheme:
+
+```
+Authorization: Bearer 3f8a91e2-7c4d-4b1a-9e05-2d6f8c3a7b19
+```
+
+`Bearer` means the holder of the token is the credential — the back end checks
+that the token is valid, not who sent it, which is exactly what a single shared
+password can offer. Using the standard header rather than a custom one also
+means logging tools and proxies already recognise it as sensitive.
+
 `401` applies to every endpoint that requires a token and is not repeated below:
 
 ```
@@ -114,9 +126,14 @@ issues one.
 | | |
 | --- | --- |
 | Auth | none |
-| Request | the dashboard password |
+| Request | `{ "password": "…" }` — the dashboard password |
 | `200` | `{ "accessToken": "3f8a91e2-7c4d-4b1a-9e05-2d6f8c3a7b19" }` |
 | `401` | wrong password |
+
+The request key is `password`, not `dashboardPassword`. `.env` needs the longer
+name because `RCON_PASSWORD` sits beside it, but only one password ever reaches
+this endpoint — the RCON one never leaves the back end — so there is nothing
+here to tell it apart from.
 
 The token is a random string held in the back end's memory, not a signed token.
 One process and one shared password mean statelessness buys nothing, and
