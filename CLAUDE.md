@@ -50,6 +50,14 @@ The point of this project is to demonstrate the developer's own design ability,
 not to ship fast. Optimize for the developer understanding every decision, not
 for volume of generated code.
 
+**Assume entry-level knowledge.** The developer is job-hunting with no
+professional experience yet and is new to JavaScript. Introduce a concept before
+building a proposal on top of it — middleware, module scope, promise caching,
+dependency direction and the like each need a sentence and a concrete example,
+not a passing mention. A proposal that offers `middleware/` as an option without
+first explaining what middleware *is* has skipped a step. Being asked "what is
+X?" after presenting options is the signal that this happened.
+
 - **Don't write whole features unprompted.** For anything substantial, propose
   an approach and wait for agreement before writing code.
 - **Skeletons are the developer's job.** File structure, module boundaries, and
@@ -98,6 +106,15 @@ for volume of generated code.
     fall as the developer writes more, and a history showing that shift is worth
     more than a uniform one. In an interview what protects the developer is
     being able to defend each decision, not a clean-looking trailer list.
+  - **When the developer does ask for the message itself, keep the body
+    proportional to what changed.** Length is not thoroughness. The body answers
+    only what the diff cannot: why now, what was rejected, what constraint the
+    change leaves behind. **When the diff is prose that carries its own
+    reasoning** — a README or design doc — that document already answers "why,"
+    so repeating it in the body is duplication, not context; cover only why now
+    and which assumptions the change rests on. `8486b27` got this wrong at 27
+    body lines for one endpoint, the same length `6933b83` used for six, and was
+    amended down to `87df38b`.
 
 ## Architecture
 
