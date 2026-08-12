@@ -95,7 +95,7 @@ the endpoints below are implemented yet; `server/routes/` is still empty. They
 are recorded here so the contract between `client/` and `server/` is fixed
 before either side is built against it.
 
-Login, Dashboard, Whitelist, and Console are settled. Logs is not designed yet.
+Login, Dashboard, Whitelist, Console, and Logs are all settled.
 
 Every payload key is `camelCase`. Failures always carry the message under
 `error`, so a client reads one field regardless of which endpoint failed.
@@ -305,6 +305,74 @@ Nothing in `command` is filtered. Reaching RCON at all is full control of the
 server, and the token that opens this endpoint already opens `POST /api/stop`, so
 an allowlist here would draw a boundary that does not exist. Confirmation lives
 in the client, as it does for `POST /api/stop`.
+
+### `GET /api/logs`
+
+The tail of the Minecraft server's log file.
+
+| | |
+| --- | --- |
+| Auth | token required |
+| Request | no body |
+| `200` | `{ "logText": "[08:38:11] [ServerMain/INFO]: ...\n[08:38:12] ..." }` |
+| `500` | `{ "error": "Cannot find the Minecraft log file. Check MINECRAFT_LOG_PATH in the back end's .env." }` |
+| `500` | `{ "error": "Cannot read the Minecraft log file. The back end does not have permission to open it." }` |
+
+**The last 500 lines**, in the order the file wrote them — oldest first — joined
+with `\n`. If the file is shorter than that, whatever it holds.
+
+`logText` is one string rather than an array of lines. The Logs screen is
+unfiltered and ungrouped (see `docs/PRD.md`), so the client does nothing per
+line: it drops the whole thing into a scrollable monospace view. An array would
+only be `join`ed back together on arrival. This is where Logs parts ways with
+`whitelistNames`, which is an array precisely because the client renders one row
+per entry. Should filtering ever arrive, the shape changes with it — both sides
+of this wire are edited together.
+
+The key is `logText`, not `logs`. `logs` repeats the path and says nothing about
+what is inside; `logText` names the contents, the same move that produced
+`whitelistNames`. It is also singular, which is what tells a reader this is a
+string and not a list.
+
+**Oldest line first, and the tail rather than the head.** `latest.log` only grows
+downward, so its first 500 lines are the boot sequence forever — a viewer pinned
+there would never show the present, and polling it would return an identical
+response every time. Reading the tail also covers what someone actually wants
+when they open this screen: a failure and the lines leading up to it, which sit
+inside the same 500-line window. Order stays as written because that window can
+contain a stack trace, where sequence is the information, and because a terminal
+puts new output at the bottom. Showing the newest first is a scroll position, not
+a data shape.
+
+**Why 500.** With no WebSocket yet, this endpoint is polled, and a polled
+response replaces the previous one instead of accumulating — so the number is not
+a starting point the way Pterodactyl's 150-line seed is, it is the entire
+scrollback. Measured against the live server, the longest session on record ran
+303 lines, so 500 covers a full session and leaves room for the burst of output
+that arrives when something breaks. At roughly 93 bytes per line that is about
+45 KB per response.
+
+**An empty file is `200` with `{ "logText": "" }`.** Nothing was read because
+nothing was there, which is not a failure of the request. It is unusual enough to
+be worth surfacing, but that belongs in the screen, not the status code — the
+same reasoning that keeps an empty whitelist a `200` with `[]`.
+
+**`503` does not appear here.** Every other endpoint reserves it for "the back
+end is fine, Minecraft is not," and this one has no such state: the log file
+reads perfectly well while the Minecraft server is stopped, verified against the
+live server.
+
+**A missing file and an unreadable one are both `500`,** separated only by the
+message. Neither is the caller's doing and neither is fixed by sending a
+different request — both need the operator to change configuration or
+permissions and restart the back end, so `503`'s implicit "try again shortly"
+would be a lie. They stay one status code because the client behaves identically
+either way; splitting codes earns its keep only when the client branches on them,
+which is what separates this from the `409`/`404` split on `POST /api/whitelist`.
+
+The messages carry only what someone could act on. The configured path never
+reaches the browser — the back end logs the full path and the original error to
+its own console, where it is useful and stays put.
 
 ## Design
 

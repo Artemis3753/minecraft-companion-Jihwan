@@ -190,8 +190,10 @@ Three consequences for the log viewer:
 - **The thread token varies** — `ServerMain`, `Server thread`,
   `DataConverter MCTypeRegistry init thread`. It contains spaces and slashes are
   not a safe split. Don't assume a fixed token count.
-- **Growth is real.** 7.4 KB in six minutes with zero players connected. Read a
-  bounded tail, never the whole file.
+- **Growth is real, but bursty.** 7.4 KB in six minutes while booting; once idle
+  it stops — measured 15 minutes with no new line at all. Sessions ran 7 to 303
+  lines, averaging ~93 bytes per line. Read a bounded tail, never the whole file,
+  and don't size that tail off the idle rate.
 
 ## Environment
 
