@@ -5,9 +5,9 @@
 A web dashboard for monitoring and managing a Paper Minecraft server remotely
 over RCON.
 
-**The back end has started.** `server/` has an Express entry point and a working
-RCON client, verified against the live server. `client/` has not been created
-yet, and there is still no test runner and no lint setup.
+**The back end is complete.** All eight endpoints in `README.md` are implemented
+and verified against the live server. `client/` has not been created yet, and
+there is still no test runner and no lint setup.
 
 ## Absolute rules
 
@@ -130,10 +130,18 @@ minecraft-companion-jihwan/
 │       └── components/   # top tab bar (shared by all views except Login)
 └── server/
     ├── package.json
-    ├── index.js          # entry point — Express app, health check route only so far
-    ├── routes/           # empty — API endpoints, including auth, land here next
+    ├── index.js          # Express app, router wiring, 404 + error handler
+    ├── routes/           # one file per URL path segment
+    │   ├── auth.js       # POST /api/login + the requireToken middleware
+    │   ├── players.js    # GET /api/players — the only route with no auth
+    │   ├── stop.js       # POST /api/stop
+    │   ├── whitelist.js  # GET/POST/DELETE /api/whitelist
+    │   ├── console.js    # POST /api/console — calls sendRaw, skips the parsers
+    │   └── logs.js       # GET /api/logs — holds the 500-line policy
     ├── services/
-    │   └── rconClient.js # cached connection + sendCommand(); log reader lands here next
+    │   ├── rconClient.js # cached connection + sendCommand()
+    │   ├── minecraft.js  # sendRaw() + one function per command, parsing included
+    │   └── logReader.js  # bounded tail of latest.log; no RCON involved
     ├── .env               # gitignored
     └── .env.example
 ```
@@ -175,6 +183,31 @@ The boundary is who chose the command, not which command it is (2026-08-11).
 
 Paper strips a leading `/` itself — `/list` and `list` return byte-identical
 responses, verified against the live server. Don't add slash handling.
+
+**RCON reply wording the parsers depend on**, all measured against the live
+server on 2026-08-12. Changing any of these means changing `services/minecraft.js`
+and nothing else — that is what the layer is for.
+
+```
+list             There are 0 of a max of 20 players online:      ← trailing space
+                 There are 2 of a max of 20 players online: A, B
+whitelist list   There are no whitelisted players                ← no colon, no list
+                 There are 2 whitelisted player(s): A, B
+whitelist add    Added <name> to the whitelist
+                 Player is already whitelisted                   → 409
+                 That player does not exist                      → 404
+whitelist remove Removed <name> from the whitelist
+                 Player is not whitelisted                       → still 200, idempotent
+                 That player does not exist                      → 404
+stop             Stopping the server                             ← ignored on purpose
+```
+
+Two things to note. **`list` and `whitelist list` change sentence shape when
+empty**, so a parser that only handles the populated form breaks on an empty
+server. And **RCON reports failure as an ordinary reply**, never as an error, so
+the back end has to read English prose to pick a status code. `online-mode=true`
+is what makes `That player does not exist` possible — with it off, Minecraft
+accepts any name.
 
 **RCON replies can carry `§` formatting codes.** `help` comes back as
 `§e--------- §fHelp: §rIndex (1/23) §e---…` while `list` has none, so they appear

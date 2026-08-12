@@ -54,7 +54,18 @@ already covers it and a control of its own earns nothing (2026-08-11).
   and demote, and a permission model behind them. What is deferred is this
   project taking a position on who may hold that authority. Typing `op` into the
   Console is not that, and is not blocked (2026-08-11)
-- Command history persistence
+- Command history persistence. **A cheap version exists**: keeping the last few
+  commands in client state and recalling them with the arrow keys needs no
+  storage and no API change. Only persisting across reloads is deferred
+- **Command autocomplete in the Console** — the parameter dropdown the game
+  client shows while typing. Deferred because RCON cannot supply it: that
+  dropdown comes from Brigadier's command tree, which the server sends over the
+  game protocol at login, and `help <command>` returns only
+  `Usage: whitelist` with no subcommands (verified 2026-08-12). Getting the real
+  tree would mean speaking the game protocol — effectively implementing a
+  Minecraft client — and a hardcoded list would drift with versions and plugins
+  while implying the Console only accepts what it lists, which is the opposite
+  of what the Console is for
 - Live log streaming over WebSocket
 
 ## User flow
