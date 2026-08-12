@@ -218,6 +218,7 @@ Adds a player to the whitelist.
 | Auth | token required |
 | Request | `{ "targetMojangName": "Alex" }` |
 | `201` | `{ "whitelistNames": ["Steve", "Alex"] }` — the list after the add |
+| `400` | `{ "error": "Player name cannot be empty." }` |
 | `409` | `{ "error": "Alex is already whitelisted." }` |
 | `404` | `{ "error": "That player does not exist in Mojang account." }` |
 | `503` | `{ "error": "Cannot reach the Minecraft server. It may not be running." }` |
@@ -234,6 +235,14 @@ canonical `Alex` comes out, because `whitelist list` reports the canonical form.
 `409` and `404` are separate on purpose. Already whitelisted means the request
 conflicts with existing state; no Mojang account means the player named does not
 exist at all. Both are the caller's problem, but they call for different fixes.
+
+**A missing or blank `targetMojangName` is `400`, not `404`.** Sending no name
+and naming an account that does not exist are different mistakes: the first is a
+malformed request, the second a request that was well formed and found nothing.
+Collapsing them hides the more likely bug — a client that misspells the key gets
+told the player does not exist, and goes looking for the fault in the wrong
+place. This is the same rule that makes a blank command a `400` on
+`POST /api/console`.
 
 ### `DELETE /api/whitelist/<playerName>`
 

@@ -13,7 +13,10 @@ let currentToken = null;
  * 대시보드 비밀번호를 토큰으로 교환한다. 토큰을 발급하는 유일한 창구.
  */
 router.post('/', (req, res) => {
-  const { password } = req.body;
+  // Express 5는 본문이 없으면 req.body를 undefined로 둔다. 그대로 구조 분해하면
+  // TypeError가 나서 잘못된 요청이 500으로 보고된다. 본문이 없는 것과 빈 본문을
+  // 같게 취급하면 아래 비교에서 자연스럽게 401로 떨어진다.
+  const { password } = req.body ?? {};
 
   if (password !== process.env.DASHBOARD_PASSWORD) {
     return res.status(401).json({ error: 'Token is invalid' });

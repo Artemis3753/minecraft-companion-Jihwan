@@ -2,6 +2,9 @@ import express from 'express';
 import authRouter from './routes/auth.js';
 import playersRouter from './routes/players.js';
 import stopRouter from './routes/stop.js';
+import whitelistRouter from './routes/whitelist.js';
+import consoleRouter from './routes/console.js';
+import logsRouter from './routes/logs.js';
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -18,6 +21,9 @@ app.get('/api/health', (req, res) => {
 app.use('/api/login', authRouter);
 app.use('/api/players', playersRouter);
 app.use('/api/stop', stopRouter);
+app.use('/api/whitelist', whitelistRouter);
+app.use('/api/console', consoleRouter);
+app.use('/api/logs', logsRouter);
 
 // 여기까지 내려왔다는 건 위의 어느 라우트에도 걸리지 않았다는 뜻이다.
 // 경로 조건이 없어서 무엇이든 걸리므로 반드시 라우트 등록 뒤에 와야 한다.
