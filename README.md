@@ -50,7 +50,7 @@ npm install
 
 ### Configure
 
-Copy `.env.example` to `.env` and fill in all five keys:
+Copy `.env.example` to `.env` and fill in all six keys:
 
 | Key | Where it comes from |
 | --- | --- |
@@ -59,6 +59,11 @@ Copy `.env.example` to `.env` and fill in all five keys:
 | `RCON_PORT` | `rcon.port` from the Minecraft server's `server.properties` |
 | `RCON_PASSWORD` | `rcon.password` from that same file |
 | `DASHBOARD_PASSWORD` | Your own choice — the password for logging into this dashboard |
+| `MINECRAFT_LOG_PATH` | Full path to the Minecraft server's `latest.log`, including the filename — typically `<server directory>/logs/latest.log` |
+
+`MINECRAFT_LOG_PATH` points at the file rather than the directory holding it.
+The log viewer reads `latest.log` and nothing else, so naming the directory would
+only move `latest.log` out of the config and into the code.
 
 `DASHBOARD_PASSWORD` and `RCON_PASSWORD` are deliberately separate. The RCON
 password authenticates the back end to Minecraft and must never reach a browser:
