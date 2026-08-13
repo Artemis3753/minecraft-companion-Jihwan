@@ -167,6 +167,11 @@ everything locally and submitting a recorded demo per Definition of done. That
 choice doesn't change any code written before it — it's revisited at the
 deployment/wrap-up stage, not now.
 
+**The API contract was fixed before either side was built.** Endpoints, payload
+shapes, and error semantics are recorded in `README.md`, so `client/` and
+`server/` are each built against a settled contract rather than against each
+other.
+
 ## Avoiding an API-wrapper project
 
 A portfolio project that calls someone else's finished REST API and renders the

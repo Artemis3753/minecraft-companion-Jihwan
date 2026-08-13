@@ -9,6 +9,25 @@ import logsRouter from './routes/logs.js';
 const app = express();
 const port = process.env.PORT || 3001;
 
+// 브라우저는 다른 출처로 보낸 요청의 응답을 기본적으로 못 읽게 막는다. 프론트(5173)와
+// 이 백엔드(3001)는 포트가 달라 서로 다른 출처이므로, 허용한다는 헤더를 직접 싣는다.
+// 맨 앞에 두는 이유는 404나 500 응답에도 이 헤더가 붙어야 하기 때문이다. 헤더가 없으면
+// 브라우저가 응답을 막아서, 클라이언트는 에러 내용 대신 정체불명의 네트워크 실패를 본다.
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', process.env.CORS_ALLOWED_ORIGIN);
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Authorization 헤더가 붙거나 메서드가 DELETE면 브라우저는 진짜 요청 전에
+  // OPTIONS로 먼저 물어본다(preflight). 여기서 끊지 않으면 라우터까지 내려가
+  // 404가 되고, 브라우저는 허락을 못 받았다고 판단해 본 요청을 아예 안 보낸다.
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+
+  next();
+});
+
 // 요청 본문은 기본적으로 바이트 덩어리로 도착한다. 이 미들웨어가 JSON을 해석해
 // req.body에 객체로 넣어준다. 라우터보다 먼저 등록해야 라우트에서 req.body를 쓸 수 있다.
 app.use(express.json());

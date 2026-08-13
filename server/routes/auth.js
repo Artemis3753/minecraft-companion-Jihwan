@@ -18,8 +18,9 @@ router.post('/', (req, res) => {
   // 같게 취급하면 아래 비교에서 자연스럽게 401로 떨어진다.
   const { password } = req.body ?? {};
 
+  // 토큰이 아직 없는 단계라 requireToken의 문구를 쓰면 안 된다. 틀린 것은 비밀번호다.
   if (password !== process.env.DASHBOARD_PASSWORD) {
-    return res.status(401).json({ error: 'Token is invalid' });
+    return res.status(401).json({ error: 'Password does not match.' });
   }
 
   // randomUUID는 암호학적으로 안전한 난수를 쓴다. Math.random()은 예측 가능해서

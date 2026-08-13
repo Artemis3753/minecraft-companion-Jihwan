@@ -6,25 +6,31 @@ A web-based dashboard for monitoring and managing a Minecraft (Paper) server rem
 
 🚧 In development
 
-## Planned Features (MVP)
+## Features (MVP)
 
-- Server online/offline status
-- View connected players
-- Stop server
-- Console (execute RCON commands)
-- Whitelist management
-- Server log viewer
-- Authentication (single shared password)
+Every endpoint below is implemented and verified against a live server. Screens
+are being built one at a time.
+
+| Feature | API | Screen |
+| --- | --- | --- |
+| Authentication (single shared password) | ✅ | ✅ |
+| Server online/offline status | ✅ | — |
+| Connected players | ✅ | — |
+| Stop server | ✅ | — |
+| Console (execute RCON commands) | ✅ | — |
+| Whitelist management | ✅ | — |
+| Server log viewer | ✅ | — |
 
 ## Tech Stack
 
-- **Frontend**: React
+- **Frontend**: React, Vite, React Router
 - **Backend**: Node.js, Express
 - **Protocol**: RCON (Minecraft Paper server)
 
 ## Setup
 
-Only the back end exists so far — `client/` has not been created yet.
+The back end is complete. The front end has routing and the Login screen; the
+other four screens are placeholders.
 
 ### Prerequisites
 
@@ -43,14 +49,25 @@ Only the back end exists so far — `client/` has not been created yet.
 
 ### Install
 
+`client/` and `server/` have separate dependencies, so both need installing.
+
 ```bash
 cd server
 npm install
 ```
 
+```bash
+cd client
+npm install
+```
+
 ### Configure
 
-Copy `.env.example` to `.env` and fill in all six keys:
+Both sides read a `.env`, and neither is committed.
+
+#### `server/.env`
+
+Copy `server/.env.example` and fill in all seven keys:
 
 | Key | Where it comes from |
 | --- | --- |
@@ -60,10 +77,31 @@ Copy `.env.example` to `.env` and fill in all six keys:
 | `RCON_PASSWORD` | `rcon.password` from that same file |
 | `DASHBOARD_PASSWORD` | Your own choice — the password for logging into this dashboard |
 | `MINECRAFT_LOG_PATH` | Full path to the Minecraft server's `latest.log`, including the filename — typically `<server directory>/logs/latest.log` |
+| `CORS_ALLOWED_ORIGIN` | Where the front end is served from — `http://localhost:5173` for the Vite dev server |
 
 `MINECRAFT_LOG_PATH` points at the file rather than the directory holding it.
 The log viewer reads `latest.log` and nothing else, so naming the directory would
 only move `latest.log` out of the config and into the code.
+
+`CORS_ALLOWED_ORIGIN` exists because the two halves listen on different ports,
+which makes them different origins as far as the browser is concerned. Without a
+matching header the browser refuses to let the front end read any response. It is
+configuration rather than a constant because the value changes with deployment,
+and a wrong value fails in the browser only — `curl` ignores CORS entirely.
+
+#### `client/.env`
+
+Copy `client/.env.example` and fill in the one key:
+
+| Key | Where it comes from |
+| --- | --- |
+| `VITE_API_BASE_URL` | Where the back end listens — `http://localhost:3001` by default |
+
+The `VITE_` prefix is required: Vite exposes a variable to browser code only if
+it carries that prefix. **Anything placed here ends up in the built bundle and is
+readable by anyone who loads the page**, so this file holds values that vary by
+environment, never secrets. That is the opposite of `server/.env`, which exists
+precisely to keep secrets off the wire.
 
 `DASHBOARD_PASSWORD` and `RCON_PASSWORD` are deliberately separate. The RCON
 password authenticates the back end to Minecraft and must never reach a browser:
@@ -75,8 +113,16 @@ only, never values.
 
 ### Run
 
+Two processes, one per half. Both stay running.
+
 ```bash
+cd server
 npm start
+```
+
+```bash
+cd client
+npm run dev
 ```
 
 The back end listens on `PORT` (default `3001`). Check that it is up:
@@ -85,17 +131,14 @@ The back end listens on `PORT` (default `3001`). Check that it is up:
 curl http://localhost:3001/api/health
 ```
 
-`/api/health` is the only route that exists today. The Minecraft server does not
-need to be running for the back end to start.
+The front end is served at `http://localhost:5173`. It needs the back end to be
+running for anything past the Login screen; the back end itself starts fine
+without the Minecraft server.
+
+Both processes read their `.env` once at startup, so editing either file means
+restarting that process.
 
 ## API
-
-**This is a design specification, not a description of working code.** None of
-the endpoints below are implemented yet; `server/routes/` is still empty. They
-are recorded here so the contract between `client/` and `server/` is fixed
-before either side is built against it.
-
-Login, Dashboard, Whitelist, Console, and Logs are all settled.
 
 Every payload key is `camelCase`. Failures always carry the message under
 `error`, so a client reads one field regardless of which endpoint failed.
@@ -128,7 +171,7 @@ issues one.
 | Auth | none |
 | Request | `{ "password": "…" }` — the dashboard password |
 | `200` | `{ "accessToken": "3f8a91e2-7c4d-4b1a-9e05-2d6f8c3a7b19" }` |
-| `401` | wrong password |
+| `401` | `{ "error": "Password does not match." }` |
 
 The request key is `password`, not `dashboardPassword`. `.env` needs the longer
 name because `RCON_PASSWORD` sits beside it, but only one password ever reaches

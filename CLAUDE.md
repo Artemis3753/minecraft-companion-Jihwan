@@ -6,8 +6,9 @@ A web dashboard for monitoring and managing a Paper Minecraft server remotely
 over RCON.
 
 **The back end is complete.** All eight endpoints in `README.md` are implemented
-and verified against the live server. `client/` has not been created yet, and
-there is still no test runner and no lint setup.
+and verified against the live server. `client/` has routing and a working Login
+screen; Dashboard, Console, Whitelist, and Logs are placeholders. There is still
+no test runner, and `server/` has no linter.
 
 ## Absolute rules
 
@@ -124,10 +125,25 @@ minecraft-companion-jihwan/
 ├── README.md
 ├── docs/
 │   └── PRD.md            # design rationale — source of truth for scope
-├── client/               # NOT YET CREATED
+├── client/
+│   ├── index.html        # loads src/main.jsx
+│   ├── vite.config.js
+│   ├── .oxlintrc.json    # came with the template; see Commands
+│   ├── .env              # gitignored — VITE_API_BASE_URL only, never secrets
+│   ├── .env.example
 │   └── src/
-│       ├── pages/        # Login, Dashboard, Console, Whitelist, Logs
-│       └── components/   # top tab bar (shared by all views except Login)
+│       ├── main.jsx      # mounts App, wrapped in BrowserRouter
+│       ├── App.jsx       # the route table, including the TabBar layout route
+│       ├── api.js        # every call to the back end; nothing else talks HTTP
+│       ├── pages/        # one file per screen
+│       │   ├── Login.jsx      # the only screen outside the tab bar
+│       │   ├── Dashboard.jsx  # placeholder
+│       │   ├── Console.jsx    # placeholder
+│       │   ├── Whitelist.jsx  # placeholder
+│       │   ├── Logs.jsx       # placeholder
+│       │   └── NotFound.jsx   # catch-all route
+│       └── components/
+│           └── TabBar.jsx
 └── server/
     ├── package.json
     ├── index.js          # Express app, router wiring, 404 + error handler
@@ -159,10 +175,10 @@ reads first to navigate.
 | | |
 | --- | --- |
 | Start the Paper server | run `start.bat` in `c:\mc-test-server` |
-| Run the front end | not yet |
+| Run the front end | `npm run dev` in `client/` (Vite dev server, default port 5173) |
 | Run the back end | `npm start` in `server/` (reads `server/.env`, listens on `PORT`, default 3001) |
 | Tests | not yet — no test runner chosen |
-| Lint | not yet — ESLint planned, deliberately deferred |
+| Lint | `npm run lint` in `client/` — oxlint, which shipped with the Vite template and was kept rather than swapped for the ESLint originally planned. `server/` has no linter |
 
 ## Domain context
 
