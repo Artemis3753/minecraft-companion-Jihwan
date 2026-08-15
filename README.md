@@ -14,9 +14,9 @@ are being built one at a time.
 | Feature | API | Screen |
 | --- | --- | --- |
 | Authentication (single shared password) | ✅ | ✅ |
-| Server online/offline status | ✅ | — |
-| Connected players | ✅ | — |
-| Stop server | ✅ | — |
+| Server online/offline status | ✅ | ✅ |
+| Connected players | ✅ | ✅ |
+| Stop server | ✅ | ✅ |
 | Console (execute RCON commands) | ✅ | — |
 | Whitelist management | ✅ | — |
 | Server log viewer | ✅ | — |
