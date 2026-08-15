@@ -1,12 +1,12 @@
-import { Routes, Route, Outlet, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
-import TabBar from './components/TabBar.jsx';
 import Login from './pages/Login.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 import Console from './pages/Console.jsx';
 import Whitelist from './pages/Whitelist.jsx';
 import Logs from './pages/Logs.jsx';
 import NotFound from './pages/NotFound.jsx';
+import ProtectedLayout from './components/ProtectedLayout.jsx';
 
 export default function App() {
   return (
@@ -21,12 +21,7 @@ export default function App() {
       {/* path 없는 Route는 주소를 갖지 않고 감싸는 역할만 한다. 안쪽 네 화면은
           공통으로 TabBar를 얹고, Outlet 자리에 현재 경로의 화면이 들어간다. */}
       <Route
-        element={
-          <>
-            <TabBar />
-            <Outlet />
-          </>
-        }
+        element={<ProtectedLayout />}
       >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/console" element={<Console />} />

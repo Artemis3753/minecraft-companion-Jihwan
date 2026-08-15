@@ -55,7 +55,10 @@ export async function requestToken(password) {
 export function saveToken(token) {
   sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
 }
-
+export function hasToken() {
+  // 토큰이 있는지 없는지 유무만 체크.
+  return !!sessionStorage.getItem(TOKEN_STORAGE_KEY);
+}
 export async function getPlayers() {
   return request('/api/players');
 }
