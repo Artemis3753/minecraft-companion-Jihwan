@@ -18,7 +18,7 @@ are being built one at a time.
 | Connected players | ✅ | ✅ |
 | Stop server | ✅ | ✅ |
 | Console (execute RCON commands) | ✅ | — |
-| Whitelist management | ✅ | — |
+| Whitelist management | ✅ | ✅ |
 | Server log viewer | ✅ | — |
 
 ## Tech Stack

@@ -7,9 +7,9 @@ over RCON.
 
 **The back end is complete.** All eight endpoints in `README.md` are implemented
 and verified against the live server. `client/` has routing, a working Login
-screen, and a working Dashboard; the four tab screens sit behind a token guard.
-Console, Whitelist, and Logs are placeholders. There is still no test runner,
-and `server/` has no linter.
+screen, a working Dashboard, and a working Whitelist; the four tab screens sit
+behind a token guard. Console and Logs are placeholders. There is still no test
+runner, and `server/` has no linter.
 
 ## Absolute rules
 
@@ -140,7 +140,7 @@ minecraft-companion-jihwan/
 │       │   ├── Login.jsx      # the only screen outside the tab bar
 │       │   ├── Dashboard.jsx  # status, players, two-step stop
 │       │   ├── Console.jsx    # placeholder
-│       │   ├── Whitelist.jsx  # placeholder
+│       │   ├── Whitelist.jsx  # list, add, remove-with-confirm
 │       │   ├── Logs.jsx       # placeholder
 │       │   └── NotFound.jsx   # catch-all route
 │       └── components/

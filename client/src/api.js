@@ -26,7 +26,14 @@ async function request(path, options = {}) {
     headers.Authorization = `Bearer ${token}`;
   }
 
-  const response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+  let response;
+  try {
+    response = await fetch(`${API_BASE_URL}${path}`, { ...options, headers });
+  } catch (error) {
+    // status를 붙이지 않는다. Dashboard는 status의 유무로 "백엔드가 503을 줬다"와
+    // "백엔드에 닿지 못했다"를 가르므로, 붙이면 회색이어야 할 상황이 빨강이 된다.
+    throw new Error('Cannot reach the back end. It may not be running.', { cause: error });
+  }
 
   // fetch는 401·503에도 예외를 던지지 않는다. 응답이 왔다는 것과 성공했다는 것은
   // 다른 사건이라, 성공 여부는 여기서 직접 판단해야 한다.
@@ -56,7 +63,6 @@ export function saveToken(token) {
   sessionStorage.setItem(TOKEN_STORAGE_KEY, token);
 }
 export function hasToken() {
-  // 토큰이 있는지 없는지 유무만 체크.
   return !!sessionStorage.getItem(TOKEN_STORAGE_KEY);
 }
 export async function getPlayers() {
