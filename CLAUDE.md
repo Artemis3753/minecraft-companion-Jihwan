@@ -6,10 +6,11 @@ A web dashboard for monitoring and managing a Paper Minecraft server remotely
 over RCON.
 
 **The back end is complete.** All eight endpoints in `README.md` are implemented
-and verified against the live server. `client/` has routing, a working Login
-screen, a working Dashboard, and a working Whitelist; the four tab screens sit
-behind a token guard. Console and Logs are placeholders. There is still no test
-runner, and `server/` has no linter.
+and verified against the live server. **Every screen in `client/` now works** —
+Login, Dashboard, Console, Whitelist, and Logs — with the four tab screens
+behind a token guard. What is left is styling, the demo recording, and a
+rewritten `README.md`. There is still no test runner, and `server/` has no
+linter.
 
 ## Absolute rules
 
@@ -139,9 +140,9 @@ minecraft-companion-jihwan/
 │       ├── pages/        # one file per screen
 │       │   ├── Login.jsx      # the only screen outside the tab bar
 │       │   ├── Dashboard.jsx  # status, players, two-step stop
-│       │   ├── Console.jsx    # placeholder
+│       │   ├── Console.jsx    # free command input, § colour codes
 │       │   ├── Whitelist.jsx  # list, add, remove-with-confirm
-│       │   ├── Logs.jsx       # placeholder
+│       │   ├── Logs.jsx       # 5s polling; the only screen with a timer
 │       │   └── NotFound.jsx   # catch-all route
 │       └── components/
 │           ├── ProtectedLayout.jsx  # token guard + the TabBar/Outlet frame
@@ -294,8 +295,11 @@ PowerShell 5.1 has no `&&` operator; chain commands with `;` or `if ($?) { ... }
   - `PascalCase` for React components and their files — `Dashboard.jsx`.
   - `camelCase` for every other file — `rconClient.js`, not `rcon-client.js`,
     so the filename matches the identifier it exports.
-  - `UPPER_SNAKE_CASE` only for `.env` keys — `RCON_PASSWORD`. That's the
-    format's convention, not ours.
+  - `UPPER_SNAKE_CASE` for two things: `.env` keys — `RCON_PASSWORD`, which is
+    that format's convention — and module-level constants that are fixed
+    settings or lookup tables, `API_BASE_URL` and `COLOR_BY_CODE`. Not every
+    `const` qualifies; a value earns the case by being a fixed table or
+    setting, not by being declared with `const`.
 - **JSON payload keys are `camelCase`** on both sides of the wire. Client and
   server are both JavaScript, so a naming translation layer would be pure cost.
 - **API routes are lowercase, hyphenated** — `/api/server-status`. URLs are

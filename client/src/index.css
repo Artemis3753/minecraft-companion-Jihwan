@@ -109,3 +109,35 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+/* Console과 Logs가 함께 쓴다. 둘 다 서버가 뱉은 글자를 그대로 보여주는 상자라
+   같은 모양이 맞다.
+
+   이 상자만 테마를 따르지 않고 색을 고정한다. 마인크래프트의 색 16개는 어두운
+   배경을 전제로 정해진 값이라, var(--bg)를 쓰면 라이트 모드에서 §f(흰색)가 배경과
+   같아져 글자가 사라진다. help 응답이 §f를 가장 많이 쓴다. */
+.terminal-output {
+  font-family: var(--mono);
+  font-size: 15px;
+  line-height: 145%;
+  background: #16161a;
+  color: #e6e6e6;
+
+  /* #root가 가운데 정렬이라 물려받으면 콘솔 출력까지 가운데로 간다. */
+  text-align: left;
+  padding: 12px;
+  border-radius: 4px;
+  margin: 16px 0;
+
+  /* 빈 응답일 때 높이가 0이 되면 성공했는데 아무 일도 없어 보인다. */
+  min-height: 1.5em;
+
+  /* 로그는 500줄이라 그대로 두면 페이지가 끝없이 길어진다. max-height는 상한일 뿐이라
+     콘솔의 짧은 응답은 여전히 내용만큼만 차지한다. */
+  max-height: 60vh;
+  overflow-y: auto;
+
+  /* pre의 기본값은 줄을 안 바꿔서 긴 응답이 가로로 삐져나간다. pre-wrap은
+     줄바꿈과 연속 공백은 그대로 두면서 넘치는 줄만 접는다. */
+  white-space: pre-wrap;
+}
