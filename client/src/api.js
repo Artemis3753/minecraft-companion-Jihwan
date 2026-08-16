@@ -40,6 +40,21 @@ async function request(path, options = {}) {
   if (!response.ok) {
     // 실패 응답은 어느 엔드포인트든 error 키 하나에 문구를 싣는다 (README의 API 계약).
     const body = await response.json().catch(() => ({}));
+
+    // 토큰이 죽었다는 뜻이므로 어느 화면에서 났든 처리는 같다. 화면마다 넣지 않고
+    // 모든 요청이 지나는 이 자리에 한 번만 둔다.
+    //
+    // 로그인 요청은 빼야 한다. 비밀번호가 틀렸을 때도 401인데, 그걸 여기서 가로채면
+    // 로그인 화면이 자기 자신으로 새로고침되면서 실패 문구까지 지워진다.
+    if (response.status === 401 && path !== '/api/login') {
+      sessionStorage.removeItem(TOKEN_STORAGE_KEY);
+
+      // react-router의 navigate 대신 통째로 새로고침한다. 이 파일은 컴포넌트가
+      // 아니라서 훅을 쓸 수 없고, 페이지가 처음부터 다시 뜨면 Logs에서 돌고 있던
+      // 폴링 타이머처럼 남아 있는 것들까지 확실히 정리된다.
+      window.location.href = '/login';
+    }
+
     const error = new Error(body.error ?? `Request failed (${response.status})`);
 
     // Dashboard가 상태를 초록/빨강/회색 세 가지로 나누려면 "백엔드가 503을 줬다"와
