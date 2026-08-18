@@ -2,6 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { getPlayers, stopServer } from '../api.js';
 
+// Logs도 같은 이름의 상수를 쓰지만 근거가 다르므로 공유하지 않는다. 로그의 5초는
+// 줄이 쌓이는 실측 속도에서 나온 값이고, 여기서 재는 것은 "사람이 접속한 걸 얼마나
+// 늦게 알아도 괜찮은가"다. 10초면 접속 뒤 평균 5초 안에 목록에 뜬다.
+//
+// list는 가벼운 명령인 데다 RCON 연결도 재사용하므로, 이 간격은 성능 문제가 아니라
+// 순전히 기다림의 문제다.
+const POLL_INTERVAL_MS = 10000;
+
 // 상태값 하나를 화면 표현으로 옮기는 표. JSX 안에서 삼항 연산자를 두 번 겹치는 대신
 // 표를 두면 "상태가 셋"이라는 사실이 한눈에 보이고, 넷째가 생겨도 여기만 늘면 된다.
 // 컴포넌트 밖에 둔 이유는 값이 바뀌지 않아서다 — 렌더마다 다시 만들 필요가 없다.
@@ -55,7 +63,16 @@ export default function Dashboard() {
       }
     }
 
+    // setInterval은 등록 즉시 실행하지 않고 첫 간격을 기다린다. 이 줄이 없으면
+    // 화면을 연 뒤 10초 동안 "Checking server status…"에 머문다.
     loadServerInfo();
+
+    const timerId = setInterval(loadServerInfo, POLL_INTERVAL_MS);
+
+    // 이 반환값이 cleanup 함수다. 다른 탭으로 옮겨가면 React가 부른다. 없으면 사라진
+    // 화면의 타이머가 계속 요청을 보내고, 탭을 오갈 때마다 타이머가 하나씩 쌓인다.
+    return () => clearInterval(timerId);
+
     // 빈 배열은 "다시 실행할 조건이 없다"는 뜻이라 마운트 시 한 번만 돈다.
     // 배열 자체를 빼면 렌더마다 실행돼 무한 루프가 된다.
   }, []);
@@ -67,8 +84,10 @@ export default function Dashboard() {
 
     try {
       await stopServer();
-      // 202는 "명령을 접수했다"지 "종료가 끝났다"가 아니다. 그래도 빨강으로 넘기는
-      // 이유는 이 화면이 조회를 한 번만 해서, 이보다 정확한 정보를 얻을 기회가 없어서다.
+      // 202는 "명령을 접수했다"지 "종료가 끝났다"가 아니다. 그래도 여기서 빨강으로
+      // 넘기는 이유는 누른 즉시 반응을 보여주기 위해서다. 폴링이 도는 화면이라 이
+      // 추측이 틀렸더라도 다음 주기가 실제 상태로 바로잡는다 — 폴링을 넣기 전에는
+      // 조회가 한 번뿐이라 이 값이 끝까지 남았고, 그게 이 주석의 원래 이유였다.
       setServerStatus('offline');
       setServerInfo(null);
     } catch (error) {

@@ -18,6 +18,14 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
+  // 위 세 줄의 허가를 브라우저가 얼마나 재사용할지 정한다. 이 헤더가 없으면 Chrome은
+  // 5초만 기억하는데, 대시보드 폴링이 10초 간격이라 매번 만료된다 — 조회 한 번에
+  // 왕복이 두 번씩 든다는 뜻이다. 600초면 그 비용이 60번에 한 번으로 줄어든다.
+  //
+  // 더 크게 잡지 않는 이유는 둘이다. Chrome이 7200초를 상한으로 잘라내고, 위 헤더를
+  // 고쳤을 때 브라우저가 옛 허가를 그만큼 오래 붙들고 있기 때문이다.
+  res.header('Access-Control-Max-Age', '600');
+
   // Authorization 헤더가 붙거나 메서드가 DELETE면 브라우저는 진짜 요청 전에
   // OPTIONS로 먼저 물어본다(preflight). 여기서 끊지 않으면 라우터까지 내려가
   // 404가 되고, 브라우저는 허락을 못 받았다고 판단해 본 요청을 아예 안 보낸다.
