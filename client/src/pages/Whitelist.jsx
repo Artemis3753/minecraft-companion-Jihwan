@@ -160,7 +160,12 @@ export default function Whitelist() {
           <button type="button" onClick={() => setNameToRemove(null)} disabled={isRemoving}>
             Cancel
           </button>
-          <button type="button" onClick={handleConfirmRemove} disabled={isRemoving}>
+          <button
+            type="button"
+            className="danger"
+            onClick={handleConfirmRemove}
+            disabled={isRemoving}
+          >
             Yes, remove
           </button>
         </div>

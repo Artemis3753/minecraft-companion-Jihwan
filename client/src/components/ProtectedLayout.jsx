@@ -24,7 +24,11 @@ export default function ProtectedLayout() {
   return (
     <>
       <TabBar />
-      <Outlet />
+      {/* 폭과 좌우 여백은 index.css의 main 규칙이 갖는다. 틀을 여기 한 번만 두면
+          탭을 추가해도 따라오고, 안쪽 화면 넷은 자기 내용만 그리면 된다. */}
+      <main>
+        <Outlet />
+      </main>
     </>
   );
 }

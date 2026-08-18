@@ -157,7 +157,12 @@ export default function Dashboard() {
                 <p>Stop the Minecraft server? Everyone online will be disconnected.</p>
                 {/* 확인 버튼을 1단계와 다른 자리에 두는 것이 실수 방지의 핵심이다.
                     같은 자리면 더블클릭 한 번으로 두 단계가 다 지나간다. */}
-                <button type="button" onClick={handleConfirmStop} disabled={isStopping}>
+                <button
+                  type="button"
+                  className="danger"
+                  onClick={handleConfirmStop}
+                  disabled={isStopping}
+                >
                   Yes, stop it
                 </button>
                 {/* 문구까지 같이 지우는 이유: 이 문구는 "토큰이 유효하지 않다"가 아니라

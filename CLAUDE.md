@@ -137,6 +137,7 @@ minecraft-companion-jihwan/
 │       ├── main.jsx      # mounts App, wrapped in BrowserRouter
 │       ├── App.jsx       # the route table, including the guarded layout route
 │       ├── api.js        # every call to the back end; nothing else talks HTTP
+│       ├── index.css     # design tokens, the page frame, .terminal-output
 │       ├── pages/        # one file per screen
 │       │   ├── Login.jsx      # the only screen outside the tab bar
 │       │   ├── Dashboard.jsx  # status, players, two-step stop
@@ -146,7 +147,8 @@ minecraft-companion-jihwan/
 │       │   └── NotFound.jsx   # catch-all route
 │       └── components/
 │           ├── ProtectedLayout.jsx  # token guard + the TabBar/Outlet frame
-│           └── TabBar.jsx
+│           ├── TabBar.jsx
+│           └── TabBar.module.css    # the first CSS Module
 └── server/
     ├── package.json
     ├── index.js          # Express app, router wiring, 404 + error handler

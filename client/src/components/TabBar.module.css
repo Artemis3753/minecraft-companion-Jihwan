@@ -1,0 +1,38 @@
+/* NavLink는 <a>로 그려지고 <a>는 인라인 요소라, 사이에 아무것도 없으면
+   DashboardConsoleWhitelistLogs로 붙는다. flex + gap이 그걸 푼다. */
+.bar {
+  display: flex;
+  gap: 4px;
+
+  /* 본문과 같은 변수를 쓴다. 첫 탭의 왼쪽 끝과 h1의 왼쪽 끝이 한 줄로 맞아야
+     탭바가 화면 위에 얹힌 별개 물건이 아니라 같은 틀로 읽힌다. */
+  padding: 0 var(--page-pad);
+
+  /* 탭바와 아래 내용 사이의 경계. 없으면 탭이 화면 내용의 일부처럼 보인다. */
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  padding: 12px 16px;
+  color: var(--text);
+
+  /* 링크의 기본 밑줄을 끈다. 탭에서 밑줄은 "현재 위치"를 뜻하는 표시로 쓸 것이라,
+     기본 밑줄을 남겨두면 넷 다 현재 탭처럼 보인다. */
+  text-decoration: none;
+
+  /* 투명한 채로 자리만 잡아둔다. 활성 탭에서만 색을 넣으면 되고, 두께가 이미
+     차지되어 있어서 탭을 옮길 때 글자가 2px씩 밀리지 않는다. */
+  border-bottom: 2px solid transparent;
+}
+
+.tab:hover {
+  color: var(--text-h);
+}
+
+.active {
+  color: var(--text-h);
+
+  /* 밑줄에만 강조색을 쓰고 글자는 흰색으로 둔다. 글자까지 파랗게 하면 탭 이름이
+     링크가 아니라 상태 표시처럼 읽히고, 강조가 두 겹이 되어 오히려 약해진다. */
+  border-bottom-color: var(--accent);
+}
