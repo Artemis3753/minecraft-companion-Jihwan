@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getWhitelist, addToWhitelist, removeFromWhitelist } from '../api.js';
+import styles from './Whitelist.module.css';
 
 export default function Whitelist() {
   // 배열로 시작하는 이유: 백엔드가 목록이 비어도 []를 주기로 계약돼 있어 모양이
@@ -127,10 +128,10 @@ export default function Whitelist() {
   }
 
   return (
-    <section>
+    <section className={styles.screen}>
       <h1>Whitelist</h1>
 
-      <form onSubmit={handleAddSubmit}>
+      <form className="form-row" onSubmit={handleAddSubmit}>
         {/* placeholder는 값을 치기 시작하면 사라지므로 라벨을 대신하지 못한다.
             화면에 라벨을 두지 않는 대신 aria-label로 이름을 남긴다. */}
         <input

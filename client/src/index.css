@@ -213,6 +213,26 @@ button:disabled {
   margin-bottom: 16px;
 }
 
+/* Console과 Whitelist의 폼이 같은 모양이다 — 텍스트 한 칸과 그 오른쪽에 선 버튼.
+   두 화면이 함께 쓰므로 .danger·.panel과 같은 기준으로 전역이다.
+
+   입력창 폭을 숫자로 정하지 않는 것이 핵심이다. flex: 1은 "버튼이 쓰고 남은 자리를
+   전부 가져라"는 뜻이라, 두 화면의 폭이 달라도(Console 1000px, Whitelist 600px)
+   각자 알아서 맞는다. 숫자를 박으면 화면마다 다시 재야 한다. */
+.form-row {
+  display: flex;
+  gap: 8px;
+}
+
+.form-row input {
+  flex: 1;
+
+  /* flex 아이템은 기본적으로 자기 내용보다 작아지지 않는데, input은 브라우저가 준
+     기본 폭(~170px)을 그 하한으로 들고 있다. 0으로 풀지 않으면 좁은 창에서 입력창이
+     안 줄어 버튼을 화면 밖으로 밀어낸다. */
+  min-width: 0;
+}
+
 code {
   font-family: var(--mono);
   display: inline-flex;

@@ -1,0 +1,6 @@
+/* 여기서 가장 긴 줄은 삭제 확인 문구이고("Remove <name> from the whitelist?"),
+   목록은 이름 하나가 곧 한 줄이다. Dashboard와 같은 600px이 나왔지만 각자 잰
+   결과가 우연히 겹친 것이라 파일을 나눠 뒀다 — 자세한 이유는 Dashboard.module.css. */
+.screen {
+  max-width: 600px;
+}

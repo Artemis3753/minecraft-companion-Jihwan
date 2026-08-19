@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { requestToken, saveToken } from '../api.js';
+import styles from './Login.module.css';
 
 export default function Login() {
   const [password, setPassword] = useState('');
@@ -35,27 +36,32 @@ export default function Login() {
     }
   }
 
+  // 탭 안쪽 넷과 달리 ProtectedLayout이 없어서 이 화면만 <main>이 없었다. 그게
+  // 좌우 여백이 없던 이유다 — 폭과 패딩을 쥔 것은 index.css의 main 규칙이다.
+  // 페이지당 <main>은 하나여야 하는데, 로그인 화면에는 탭 틀이 없으니 겹치지 않는다.
   return (
-    <form onSubmit={handleSubmit}>
-      <h1>Login</h1>
+    <main>
+      <form className={styles.form} onSubmit={handleSubmit}>
+        <h1>Login</h1>
 
-      {/* value와 onChange를 함께 두면 입력값의 주인이 React가 된다. 하나만 두면
-          화면에 보이는 값과 password 변수가 어긋난다. */}
-      <input
-        type="password"
-        value={password}
-        onChange={(event) => setPassword(event.target.value)}
-        placeholder="Dashboard password"
-        required
-      />
+        {/* value와 onChange를 함께 두면 입력값의 주인이 React가 된다. 하나만 두면
+            화면에 보이는 값과 password 변수가 어긋난다. */}
+        <input
+          type="password"
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
+          placeholder="Dashboard password"
+          required
+        />
 
-      {/* 응답을 기다리는 동안 잠근다. 연타하면 같은 요청이 여러 번 나간다. */}
-      <button type="submit" disabled={isSubmitting}>
-        {isSubmitting ? 'Signing in…' : 'Log in'}
-      </button>
+        {/* 응답을 기다리는 동안 잠근다. 연타하면 같은 요청이 여러 번 나간다. */}
+        <button type="submit" disabled={isSubmitting}>
+          {isSubmitting ? 'Signing in…' : 'Log in'}
+        </button>
 
-      {/* 앞이 참일 때만 뒤를 그린다. errorMessage가 빈 문자열이면 아무것도 안 나온다. */}
-      {errorMessage && <p>{errorMessage}</p>}
-    </form>
+        {/* 앞이 참일 때만 뒤를 그린다. errorMessage가 빈 문자열이면 아무것도 안 나온다. */}
+        {errorMessage && <p>{errorMessage}</p>}
+      </form>
+    </main>
   );
 }

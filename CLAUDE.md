@@ -137,12 +137,15 @@ minecraft-companion-jihwan/
 │       ├── main.jsx      # mounts App, wrapped in BrowserRouter
 │       ├── App.jsx       # the route table, including the guarded layout route
 │       ├── api.js        # every call to the back end; nothing else talks HTTP
-│       ├── index.css     # design tokens, the page frame, .terminal-output
-│       ├── pages/        # one file per screen
+│       ├── index.css     # design tokens, the page frame, the shared classes
+│       ├── pages/        # one screen per file; a module only where one is earned
 │       │   ├── Login.jsx      # the only screen outside the tab bar
+│       │   ├── Login.module.css     # narrow form; the lone input fills it
 │       │   ├── Dashboard.jsx  # status, players, two-step stop
+│       │   ├── Dashboard.module.css # 600px, off this screen's longest line
 │       │   ├── Console.jsx    # free command input, § colour codes
 │       │   ├── Whitelist.jsx  # list, add, remove-with-confirm
+│       │   ├── Whitelist.module.css # 600px, measured separately on purpose
 │       │   ├── Logs.jsx       # 5s polling; the only screen with a timer
 │       │   └── NotFound.jsx   # catch-all route
 │       └── components/

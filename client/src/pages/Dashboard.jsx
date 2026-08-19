@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { getPlayers, stopServer } from '../api.js';
+import styles from './Dashboard.module.css';
 
 // Logs도 같은 이름의 상수를 쓰지만 근거가 다르므로 공유하지 않는다. 로그의 5초는
 // 줄이 쌓이는 실측 속도에서 나온 값이고, 여기서 재는 것은 "사람이 접속한 걸 얼마나
@@ -118,7 +119,7 @@ export default function Dashboard() {
   const { color, label } = STATUS_DISPLAY[serverStatus];
 
   return (
-    <section>
+    <section className={styles.screen}>
       <h1>Dashboard</h1>
 
       {/* 상태와 Stop이 한 상자다. 서버라는 대상과 그 대상에 하는 동작이라, 사람

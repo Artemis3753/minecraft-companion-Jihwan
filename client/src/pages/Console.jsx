@@ -124,7 +124,7 @@ export default function Console() {
     <section>
       <h1>Console</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form className="form-row" onSubmit={handleSubmit}>
         {/* 라벨을 화면에 두지 않는 대신 aria-label로 이름을 남긴다.
             placeholder는 값을 치기 시작하면 사라지므로 라벨을 대신하지 못한다. */}
         <input
