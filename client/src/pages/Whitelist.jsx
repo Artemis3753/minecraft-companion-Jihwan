@@ -178,7 +178,7 @@ export default function Whitelist() {
       {whitelistNames.length === 0 ? (
         <p>No one is whitelisted.</p>
       ) : (
-        <ul>
+        <ul className="panel">
           {/* key에 인덱스 대신 이름을 쓰는 이유는 Dashboard와 같다. 항목이 지워지면
               인덱스가 밀려 엉뚱한 행에 붙는다. Minecraft 이름은 중복되지 않는다. */}
           {whitelistNames.map((playerName) => (

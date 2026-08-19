@@ -121,36 +121,19 @@ export default function Dashboard() {
     <section>
       <h1>Dashboard</h1>
 
-      <p>
-        {/* 색만으로 상태를 알리면 색각 이상 사용자에게는 아무 정보도 아니다.
-            점 옆의 문구가 실제 정보고, 색은 거드는 역할이다. */}
-        <span style={{ color }}>●</span> {label}
-      </p>
+      {/* 상태와 Stop이 한 상자다. 서버라는 대상과 그 대상에 하는 동작이라, 사람
+          목록보다 서로 가깝다. 대신 online 조건이 두 군데로 나뉘는 값을 치렀다 —
+          상자는 언제나 그려지고 그 안의 버튼만 조건부다. */}
+      <div className="panel">
+        <p>
+          {/* 색만으로 상태를 알리면 색각 이상 사용자에게는 아무 정보도 아니다.
+              점 옆의 문구가 실제 정보고, 색은 거드는 역할이다. */}
+          <span style={{ color }}>●</span> {label}
+        </p>
 
-      {/* 초록일 때만 목록을 그린다. 나머지 두 상태에서는 serverInfo가 null이다. */}
-      {serverStatus === 'online' && (
-        <>
-          <h2>
-            Players ({serverInfo.playerNames.length} / {serverInfo.maxPlayerCount})
-          </h2>
-
-          {/* 빈 배열이면 ul이 껍데기만 남아 아무 말도 하지 않는다.
-              "아무도 없다"는 것도 알려줘야 할 정보라 문구로 대신한다. */}
-          {serverInfo.playerNames.length === 0 ? (
-            <p>No one is online.</p>
-          ) : (
-            <ul>
-              {/* key는 React가 목록의 항목을 재사용할 때 쓰는 식별자다. 배열 인덱스
-                  대신 이름을 쓰는 이유는, 사람이 나가면 인덱스가 밀려 엉뚱한 항목에
-                  붙기 때문이다. Minecraft 이름은 서버 안에서 중복되지 않는다. */}
-              {serverInfo.playerNames.map((playerName) => (
-                <li key={playerName}>{playerName}</li>
-              ))}
-            </ul>
-          )}
-
-          {/* 빨강·회색일 때는 이 블록 전체가 안 그려진다. 이미 꺼진 서버에
-              끄기 버튼을 남겨둘 이유가 없다. */}
+        {/* 빨강·회색일 때는 이 블록 전체가 안 그려진다. 이미 꺼진 서버에
+            끄기 버튼을 남겨둘 이유가 없다. */}
+        {serverStatus === 'online' && (
           <div>
             {isConfirmingStop ? (
               <>
@@ -189,7 +172,31 @@ export default function Dashboard() {
             {/* 서버 상태와 별개로, 이번 Stop 시도만의 실패를 알린다. */}
             {stopErrorMsg && <p>{stopErrorMsg}</p>}
           </div>
-        </>
+        )}
+      </div>
+
+      {/* 초록일 때만 목록을 그린다. 나머지 두 상태에서는 serverInfo가 null이다. */}
+      {serverStatus === 'online' && (
+        <div className="panel">
+          <h2>
+            Players ({serverInfo.playerNames.length} / {serverInfo.maxPlayerCount})
+          </h2>
+
+          {/* 빈 배열이면 ul이 껍데기만 남아 아무 말도 하지 않는다.
+              "아무도 없다"는 것도 알려줘야 할 정보라 문구로 대신한다. */}
+          {serverInfo.playerNames.length === 0 ? (
+            <p>No one is online.</p>
+          ) : (
+            <ul>
+              {/* key는 React가 목록의 항목을 재사용할 때 쓰는 식별자다. 배열 인덱스
+                  대신 이름을 쓰는 이유는, 사람이 나가면 인덱스가 밀려 엉뚱한 항목에
+                  붙기 때문이다. Minecraft 이름은 서버 안에서 중복되지 않는다. */}
+              {serverInfo.playerNames.map((playerName) => (
+                <li key={playerName}>{playerName}</li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
     </section>
   );
