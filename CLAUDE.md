@@ -133,6 +133,8 @@ minecraft-companion-jihwan/
 │   ├── .oxlintrc.json    # came with the template; see Commands
 │   ├── .env              # gitignored — VITE_API_BASE_URL only, never secrets
 │   ├── .env.example
+│   ├── public/           # copied to dist/ as-is, served from the site root
+│   │   └── favicon.svg   # isometric cube; palette hexes, inlined (no CSS vars)
 │   └── src/
 │       ├── main.jsx      # mounts App, wrapped in BrowserRouter
 │       ├── App.jsx       # the route table, including the guarded layout route
