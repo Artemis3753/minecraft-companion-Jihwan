@@ -41,11 +41,6 @@ already covers it and a control of its own earns nothing (2026-08-11).
 
 ### Later
 
-- **Restart.** Cut from the MVP deliberately. Minecraft has no `restart` command
-  — RCON can only send `stop`, so restarting means a process supervisor outside
-  the server that notices it died and runs `start.bat` again. That drags in the
-  still-undecided deployment question, and it is a different problem from
-  everything else in the MVP. Revisit once deployment is settled.
 - Player history (UUID, first/last login, kills/deaths, total playtime)
 - Alerts / notifications on server down
 - Multi-server support
@@ -154,18 +149,39 @@ without bound; read a bounded tail rather than the whole file.
 **RCON, not a plugin.** RCON is built into Paper and needs no server-side code,
 keeping the Minecraft server unmodified.
 
-**Deployment: back end location decided, public exposure deferred.** The back
+**No restart. Considered and declined (2026-08-20)**, not postponed. Minecraft
+has no `restart` command: RCON can only send `stop`, and RCON is served by the
+server process itself, so `stop` closes the control channel along with the thing
+it controls — nothing is left listening to start it again. It would take a
+process supervisor running outside the server, watching for the exit and
+re-running `start.bat`. That is a different kind of program, and it would make
+this project own the Minecraft server's lifecycle instead of talking to one
+someone else runs. A structural limit, not a scheduling one.
+
+**Deployment: the back end must run beside the Minecraft server.** The back
 end reads `latest.log` off disk and opens a TCP socket to `localhost:25575`, so
 it must run as a persistent process on the same machine/network as the
 Minecraft server — a serverless host with no filesystem access to that machine
 won't work (2026-08-08). This is settled regardless of what comes next, so it
 doesn't block `server/` scaffolding.
 
-What's still open: whether to expose that back end publicly (port
-forwarding/tunnel/VPS, paired with the Vercel-hosted front end) versus running
-everything locally and submitting a recorded demo per Definition of done. That
-choice doesn't change any code written before it — it's revisited at the
-deployment/wrap-up stage, not now.
+**Public exposure: declined (2026-08-20).** The back end runs locally and the
+project ships a recorded demo instead. Four properties of the code as it stands
+decided it: there is no HTTPS, so the dashboard password would cross the network
+in plain text; `POST /api/login` has no attempt limit; an issued token never
+expires; and reaching this back end at all is full control of the Minecraft
+server, since `POST /api/console` filters nothing. CORS is not a defence against
+any of that — it constrains browsers, and an attacker does not need one.
+
+A public URL would also show less than the recording does. Every screen sits
+behind the login, so a reviewer following a link sees one password field and
+nothing else, while a demo shows all five screens and the polling picking up a
+restart on its own. Keeping that URL meaningful would additionally mean running
+the Minecraft server 24/7 on a paid host, since the back end must share its
+machine.
+
+The decision rests on those four properties, not on a preference. HTTPS, an
+attempt limit on login, and token expiry are what would reopen it.
 
 **The API contract was fixed before either side was built.** Endpoints, payload
 shapes, and error semantics are recorded in `README.md`, so `client/` and

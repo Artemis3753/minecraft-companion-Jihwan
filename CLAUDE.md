@@ -36,16 +36,13 @@ See `docs/PRD.md` for the MVP feature list, screens, structure, and the
 reasoning behind the technical decisions. Treat it as the source of truth for
 what's in and out of scope.
 
-Three sections there constrain everyday decisions — check them before proposing
+Two sections there constrain everyday decisions — check them before proposing
 anything new:
 
 - **Definition of done** — the finish line is fixed. Work stops when that list
   is met; anything past it is a separate effort, not "still finishing."
 - **Avoiding an API-wrapper project** — reject features that amount to fetching
   a third-party endpoint and rendering the result.
-- **Deployment: undecided** — the back end needs filesystem access to
-  `latest.log` and a TCP socket to the Minecraft host, so serverless won't work
-  as-is. Settle this before writing deployment-specific code.
 
 ## Working principles
 
@@ -247,9 +244,9 @@ it as React elements, never `dangerouslySetInnerHTML`. Player names and chat
 reach both the Console and the log viewer, so the text is not trusted input.
 
 **There is no `restart` command in Minecraft.** RCON can only send `stop`;
-restarting requires a process supervisor outside the server. Restart was cut
-from the MVP for that reason — see the Later list in `docs/PRD.md`. Don't
-reintroduce it.
+restarting requires a process supervisor outside the server. Restart was
+considered and declined for that reason — see Technical decisions in
+`docs/PRD.md`. Don't reintroduce it.
 
 **`latest.log` line format**, verified against the live server:
 
