@@ -184,7 +184,7 @@ The decision rests on those four properties, not on a preference. HTTPS, an
 attempt limit on login, and token expiry are what would reopen it.
 
 **The API contract was fixed before either side was built.** Endpoints, payload
-shapes, and error semantics are recorded in `README.md`, so `client/` and
+shapes, and error semantics are recorded in `docs/API.md`, so `client/` and
 `server/` are each built against a settled contract rather than against each
 other.
 

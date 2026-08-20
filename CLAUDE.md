@@ -5,12 +5,12 @@
 A web dashboard for monitoring and managing a Paper Minecraft server remotely
 over RCON.
 
-**The back end is complete.** All eight endpoints in `README.md` are implemented
+**The back end is complete.** All nine endpoints in `docs/API.md` are implemented
 and verified against the live server. **Every screen in `client/` now works** —
 Login, Dashboard, Console, Whitelist, and Logs — with the four tab screens
-behind a token guard. What is left is styling, the demo recording, and a
-rewritten `README.md`. There is still no test runner, and `server/` has no
-linter.
+behind a token guard. Styling is done. What is left is the demo recording, the
+screenshots, and finishing `README.md` in the developer's own words. There is
+still no test runner, and `server/` has no linter.
 
 ## Absolute rules
 
@@ -123,7 +123,9 @@ minecraft-companion-jihwan/
 ├── CLAUDE.md
 ├── README.md
 ├── docs/
-│   └── PRD.md            # design rationale — source of truth for scope
+│   ├── PRD.md            # design rationale — source of truth for scope
+│   ├── API.md            # the HTTP contract, and why each response is shaped so
+│   └── images/           # README screenshots; never client/public/ — that ships
 ├── client/
 │   ├── index.html        # loads src/main.jsx
 │   ├── vite.config.js
