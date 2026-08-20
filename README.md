@@ -8,8 +8,8 @@ A web-based dashboard for monitoring and managing a Minecraft (Paper) server rem
 
 ## Features (MVP)
 
-Every endpoint below is implemented and verified against a live server. Screens
-are being built one at a time.
+Every endpoint below is implemented and verified against a live server, and
+every screen is built.
 
 | Feature | API | Screen |
 | --- | --- | --- |
@@ -17,9 +17,9 @@ are being built one at a time.
 | Server online/offline status | ✅ | ✅ |
 | Connected players | ✅ | ✅ |
 | Stop server | ✅ | ✅ |
-| Console (execute RCON commands) | ✅ | — |
+| Console (execute RCON commands) | ✅ | ✅ |
 | Whitelist management | ✅ | ✅ |
-| Server log viewer | ✅ | — |
+| Server log viewer | ✅ | ✅ |
 
 ## Tech Stack
 
@@ -28,9 +28,6 @@ are being built one at a time.
 - **Protocol**: RCON (Minecraft Paper server)
 
 ## Setup
-
-The back end is complete. The front end has routing and the Login screen; the
-other four screens are placeholders.
 
 ### Prerequisites
 
