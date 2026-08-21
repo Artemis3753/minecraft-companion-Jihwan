@@ -8,9 +8,11 @@ over RCON.
 **The back end is complete.** All nine endpoints in `docs/API.md` are implemented
 and verified against the live server. **Every screen in `client/` now works** —
 Login, Dashboard, Console, Whitelist, and Logs — with the four tab screens
-behind a token guard. Styling is done. What is left is the demo recording, the
-screenshots, and finishing `README.md` in the developer's own words. There is
-still no test runner, and `server/` has no linter.
+behind a token guard. Styling is done. The MVP scope in `docs/PRD.md` is met: the
+demo is recorded and published, the screenshots are in `docs/images/`, and
+`README.md` is written. What remains is outside the repo — adding the project to
+the resume and posting it once. There is still no test runner, and `server/` has
+no linter.
 
 ## Absolute rules
 
