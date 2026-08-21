@@ -16,9 +16,11 @@ practice full-stack design.
 
 ## Demo
 
-**Dashboard** — whether the server is up, and who is connected.
+**Dashboard** — whether the server is up, and who is connected. It asks the server
+every ten seconds, so when the server comes back it turns green on its own. Nothing
+below was clicked; the cursor does not move.
 
-![Dashboard](docs/images/dashboard.png)
+![The dashboard turning green by itself once the restarted server answers again](docs/images/dashboard.gif)
 
 **Stopping the server takes two steps.** No destructive action is a single click.
 
@@ -40,8 +42,8 @@ practice full-stack design.
 
 I chose not to deploy this publicly: as the code stands there is no HTTPS, no
 limit on login attempts, and tokens never expire. Reaching this back end at all
-is full control of the Minecraft server, so it runs locally, and the screenshots
-above are what I can show instead — the reasoning is in
+is full control of the Minecraft server, so it runs locally, and the clip and
+screenshots above are what I can show instead — the reasoning is in
 [`docs/PRD.md`](docs/PRD.md).
 
 ## Features
