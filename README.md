@@ -12,7 +12,8 @@ practice full-stack design.
 
 ## Status
 
-🚧 In development
+✅ Complete — the MVP scope in [`docs/PRD.md`](docs/PRD.md) is done, and every
+endpoint is verified against a live Paper server.
 
 ## Demo
 
@@ -42,9 +43,9 @@ below was clicked; the cursor does not move.
 
 I chose not to deploy this publicly: as the code stands there is no HTTPS, no
 limit on login attempts, and tokens never expire. Reaching this back end at all
-is full control of the Minecraft server, so it runs locally, and the clip and
-screenshots above are what I can show instead — the reasoning is in
-[`docs/PRD.md`](docs/PRD.md).
+is full control of the Minecraft server, so it runs locally. There is a
+[recorded walkthrough](https://youtu.be/STs8S6lfzRQ) instead — the reasoning is
+in [`docs/PRD.md`](docs/PRD.md).
 
 ## Features
 
