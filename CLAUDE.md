@@ -10,9 +10,8 @@ and verified against the live server. **Every screen in `client/` now works** �
 Login, Dashboard, Console, Whitelist, and Logs — with the four tab screens
 behind a token guard. Styling is done. The MVP scope in `docs/PRD.md` is met: the
 demo is recorded and published, the screenshots are in `docs/images/`, and
-`README.md` is written. What remains is outside the repo — adding the project to
-the resume and posting it once. There is still no test runner, and `server/` has
-no linter.
+`README.md` is written. There is still no test runner, and `server/` has no
+linter.
 
 ## Absolute rules
 
@@ -52,8 +51,8 @@ The point of this project is to demonstrate the developer's own design ability,
 not to ship fast. Optimize for the developer understanding every decision, not
 for volume of generated code.
 
-**Assume entry-level knowledge.** The developer is job-hunting with no
-professional experience yet and is new to JavaScript. Introduce a concept before
+**Assume entry-level knowledge.** The developer is still learning
+JavaScript and its tooling. Introduce a concept before
 building a proposal on top of it — middleware, module scope, promise caching,
 dependency direction and the like each need a sentence and a concrete example,
 not a passing mention. A proposal that offers `middleware/` as an option without
@@ -85,8 +84,8 @@ X?" after presenting options is the signal that this happened.
   library, a data shape, a cut feature, a trade-off — say so and point at
   `docs/interview-prep.md` (a local, gitignored notebook). Add the *question*
   there; **never write the answer.** The developer writes it in their own words,
-  and being unable to is the signal worth catching. This is a job-search
-  portfolio: an explanation the developer can't give unaided is a liability.
+  and being unable to is the signal worth catching. This is a portfolio
+  project: an explanation the developer can't give unaided is a liability.
 - **Check that log before every commit.** The prompt above depends on noticing
   the moment, and mid-work that leaks; a commit is an explicit checkpoint that
   doesn't. Before writing the message, ask whether the change embodies a
@@ -106,22 +105,20 @@ X?" after presenting options is the signal that this happened.
     whatever reads better. It belongs on a commit whose code or prose came from
     here; it does not belong on one the developer wrote alone. Its share should
     fall as the developer writes more, and a history showing that shift is worth
-    more than a uniform one. In an interview what protects the developer is
-    being able to defend each decision, not a clean-looking trailer list.
+    more than a uniform one. What protects the developer is being able to
+    defend each decision, whatever the trailer says.
   - **When the developer does ask for the message itself, keep the body
     proportional to what changed.** Length is not thoroughness. The body answers
     only what the diff cannot: why now, what was rejected, what constraint the
     change leaves behind. **When the diff is prose that carries its own
     reasoning** — a README or design doc — that document already answers "why,"
     so repeating it in the body is duplication, not context; cover only why now
-    and which assumptions the change rests on. `8486b27` got this wrong at 27
-    body lines for one endpoint, the same length `6933b83` used for six, and was
-    amended down to `87df38b`.
+    and which assumptions the change rests on.
 
 ## Architecture
 
 ```
-minecraft-companion-jihwan/
+minecraft-companion-Jihwan/
 ├── CLAUDE.md
 ├── README.md
 ├── docs/
@@ -173,9 +170,9 @@ minecraft-companion-jihwan/
     └── .env.example
 ```
 
-Everything in this tree exists except `client/`. **Update this tree as
-directories are created** — it is the current map, and it is what a session
-reads first to navigate.
+Everything in this tree exists. **Update this tree as directories are
+created** — it is the current map, and it is what a session reads first to
+navigate.
 
 `docs/PRD.md` carries the same tree, but for a different purpose: it records
 *why* the structure is this shape (why one repo, why `routes/` is split from

@@ -2,6 +2,8 @@
 
 A web-based dashboard for monitoring and managing a Minecraft (Paper) server remotely via RCON.
 
+Built with Claude Code under my direction. See [How I work with Claude Code](#how-i-work-with-claude-code).
+
 I was always interested in running Minecraft servers as a teenager. I managed a
 server for 10 to 15 players, and it meant I had to sit at the PC with a console
 open. This was pretty inconvenient because I had to be home to manage it — I
@@ -154,6 +156,17 @@ without the Minecraft server.
 
 Both processes read their `.env` once at startup, so editing either file means
 restarting that process.
+
+## How I work with Claude Code
+
+This project was built with Claude Code, working from the rules in [`CLAUDE.md`](CLAUDE.md), which it reads at the start of every session.
+
+- **Credentials:** "Never write credentials into this repo." Only `.env.example` files are tracked, with key names and no values.
+- **Confirmation:** "Destructive commands need explicit confirmation." Stopping the server and removing a whitelist entry each take two steps.
+- **Scope:** "Don't write whole features unprompted." Claude proposes an approach and waits for my agreement before it writes code.
+- **Untrusted text:** server output is rendered "as React elements, never `dangerouslySetInnerHTML`".
+- **Commits:** "The developer writes the commit message." Claude supplies notes; a `Co-Authored-By` trailer is meant to mark commits whose code or prose came from Claude.
+- **Not here:** hooks, custom commands, and an automated test runner.
 
 ## Documentation
 
